@@ -36,6 +36,9 @@ services:
       DB_HOST: db
       DB_PORT: 5432
       DB_NAME: mydb
+    volumes:
+      - .:/app
+      - ./requirements.txt:/app/requirements.txt
 
 volumes:
   db_data:
