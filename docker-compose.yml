@@ -1,45 +1,13 @@
-version: "3.9"
+version: '3'
 
 services:
-  db:
-    image: postgres:13.3-alpine
-    restart: always
-    environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydb
-    volumes:
-      - db_data:/var/lib/postgresql/data
-
-  nginx:
-    image: nginx:1.21.0-alpine
-    restart: always
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - certs:/etc/nginx/certs
-    depends_on:
-      - app
-
   app:
+    image: prodigy:0.0.1
+    stdin_open: true
+    tty: true
     build:
       context: .
       dockerfile: Dockerfile
     restart: always
     ports:
-      - "8000:80"
-    environment:
-      DB_USER: myuser
-      DB_PASSWORD: mypassword
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_NAME: mydb
-    volumes:
-      - .:/app
-      - ./requirements.txt:/app/requirements.txt
-
-volumes:
-  db_data:
-  certs:
+      - '8080:8080'
