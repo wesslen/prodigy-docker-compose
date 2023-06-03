@@ -2,10 +2,9 @@ FROM python:3.9-slim-buster
 RUN mkdir /app
 WORKDIR /app
 
-COPY wheels/*.whl .
-
 RUN pip install --upgrade pip \ 
-    && pip install prodigy -f *.whl \ 
+    && pip install prodigy -f https://${PRODIGY_KEY}@download.prodi.gy \ 
+    && pip install -r requirements.txt \
     && python -m spacy download en_core_web_sm
 
 RUN rm -rf *.whl
