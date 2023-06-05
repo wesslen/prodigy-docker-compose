@@ -1,0 +1,13 @@
+{
+    "host" : "0.0.0.0",
+    "db": "postgresql",
+    "db_settings": {
+      "postgresql": {
+        "database": "prodigy",
+        "host": "db",
+        "port": 5432,
+        "user": "myuser",
+        "password": "mypassword"
+      }
+    }
+  }
