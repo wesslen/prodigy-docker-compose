@@ -2,14 +2,21 @@ FROM python:3.9-slim-buster
 RUN mkdir /app
 WORKDIR /app
 
-RUN pip install --upgrade pip \ 
-    && pip install prodigy -f https://${PRODIGY_KEY}@download.prodi.gy \ 
+# install gettext for envsubst
+RUN apt-get update
+RUN apt-get install -y gettext-base
+
+COPY requirements.txt .
+COPY wheels/*.whl .
+
+RUN pip install --upgrade pip \
+    && pip install prodigy -f *.whl \
     && pip install -r requirements.txt \
     && python -m spacy download en_core_web_sm
 
-RUN rm -rf *.whl
 COPY data ./data/
-COPY prodigy.json .
+COPY prodigy.json.template .
+RUN envsubst < prodigy.json.template > prodigy.json
 COPY prodigy.sh .
 
 ENV PRODIGY_ALLOWED_SESSIONS "user1,user2"
